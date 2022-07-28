@@ -4,7 +4,7 @@
 
 动物识别模型，支持7978种动物的分类识别。
 
-### SDK功能
+### 功能
 
 - 支持7978种动物的分类识别，并给出置信度。
 - 提供两个可用模型例子 1). 大模型(resnet50)https://aias-home.oss-cn-beijing.aliyuncs.com/models/animals.zip
