@@ -67,6 +67,7 @@ public class Main {
       }
     }
     canvas.dispose();
+    converter.close();
     grabber.close();
   }
 }
