@@ -8,11 +8,13 @@ import ai.djl.translate.TranslateException;
 import cn.heavenlybook.utils.AnimalsClassification;
 import cn.heavenlybook.utils.OpenCVImageUtil;
 import lombok.extern.java.Log;
+import org.bytedeco.javacv.CanvasFrame;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.OpenCVFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameGrabber;
 import org.bytedeco.opencv.opencv_core.Mat;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -28,8 +30,17 @@ public class Main {
     // Frame与Mat转换
     OpenCVFrameConverter.ToMat converter = new OpenCVFrameConverter.ToMat();
     Frame frame;
+    // 新建一个预览窗口
+    CanvasFrame canvas = new CanvasFrame("人脸检测");
+    canvas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    canvas.setVisible(true);
+    canvas.setFocusable(true);
+    // 窗口置顶
+    if (canvas.isAlwaysOnTopSupported()) {
+      canvas.setAlwaysOnTop(true);
+    }
     // 获取图像帧
-    while ((frame = grabber.grab()) != null) {
+    while (canvas.isVisible() && (frame = grabber.grab()) != null) {
       // 将获取的frame转化成mat数据类型
       Mat img = converter.convert(frame);
       BufferedImage buffImg = OpenCVImageUtil.mat2BufferedImage(img);
@@ -38,6 +49,10 @@ public class Main {
       Classifications.Classification bestItem = classifications.best();
       log.info(bestItem.getClassName() + " : " + bestItem.getProbability());
       log.info(classifications.toJson());
+      // 显示视频图像
+      canvas.showImage(frame);
     }
+    canvas.dispose();
+    grabber.close();
   }
 }
