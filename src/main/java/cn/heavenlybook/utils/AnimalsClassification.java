@@ -11,7 +11,6 @@ import ai.djl.training.util.ProgressBar;
 import ai.djl.translate.TranslateException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 // https://www.paddlepaddle.org.cn/hubdetail?name=resnet50_vd_animals&en_category=ImageClassification
@@ -27,43 +26,16 @@ public final class AnimalsClassification {
 
   public static Classifications predict(Image img)
       throws IOException, ModelException, TranslateException {
-    Classifications classifications = AnimalsClassification.classfier(img);
+    Classifications classifications = AnimalsClassification.classifier(img);
     List<Classifications.Classification> items = classifications.items();
-    double sum = 0;
-    double max = 0;
-    double[] probArr = new double[items.size()];
-
-    List<String> names = new ArrayList<>();
-    List<Double> probs = new ArrayList<>();
-
-    for (int i = 0; i < items.size(); i++) {
-      Classifications.Classification item = items.get(i);
-      double prob = item.getProbability();
-      probArr[i] = prob;
-      if (prob > max) {
-        max = prob;
-      }
-    }
-
-    for (int i = 0; i < items.size(); i++) {
-      probArr[i] = Math.exp(probArr[i] - max);
-      sum = sum + probArr[i];
-    }
-
-    for (int i = 0; i < items.size(); i++) {
-      Classifications.Classification item = items.get(i);
-      names.add(item.getClassName());
-      probs.add(probArr[i]);
-    }
-
-    return new Classifications(names, probs);
+    return ClassificationUtil.get(items);
   }
 
   static Criteria<Image, Classifications> criteria;
   static ZooModel<Image, Classifications> rotateModel;
   static Predictor<Image, Classifications> classifier;
 
-  public static Classifications classfier(Image img)
+  public static Classifications classifier(Image img)
       throws IOException, ModelException, TranslateException {
 
     criteria =
