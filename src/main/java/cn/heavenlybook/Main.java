@@ -36,7 +36,7 @@ public class Main {
     OpenCVFrameConverter.ToMat converter = new OpenCVFrameConverter.ToMat();
     Frame frame;
     // 新建一个预览窗口
-    CanvasFrame canvas = new CanvasFrame("人脸检测");
+    CanvasFrame canvas = new CanvasFrame("动物检测");
     canvas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     canvas.setVisible(true);
     canvas.setFocusable(true);
