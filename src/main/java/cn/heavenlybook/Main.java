@@ -19,13 +19,15 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+import java.nio.file.Paths;
 
 /**
  * @author ht
  */
 @Log
 public class Main {
+  static int i = 0;
+
   public static void main(String[] args) throws IOException, ModelException, TranslateException {
     // 开启摄像头，获取图像（得到的图像为frame类型，需要转换为mat类型进行检测和识别）
     OpenCVFrameGrabber grabber = new OpenCVFrameGrabber(0);
@@ -54,9 +56,13 @@ public class Main {
       log.info(classifications.toJson());
       // 显示视频图像
       canvas.showImage(frame);
-      if (bestItem.getProbability() == 1.0) {
-        File outPutFile = new File(new Date() + ".png");
+      if (bestItem.getProbability() == 1.0 && !"非动物".equals(bestItem.getClassName())) {
+        File outPutFile =
+            new File(String.valueOf(Paths.get("src/test/resources/" + i++ + "coffee.png")));
         assert buffImg != null;
+        if (!outPutFile.exists()) {
+          log.info(String.valueOf(outPutFile.createNewFile()));
+        }
         ImageIO.write(buffImg, "png", outPutFile);
       }
     }
