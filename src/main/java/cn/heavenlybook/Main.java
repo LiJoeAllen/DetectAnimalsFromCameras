@@ -57,13 +57,13 @@ public class Main {
       // 显示视频图像
       canvas.showImage(frame);
       if (bestItem.getProbability() == 1.0 && !"非动物".equals(bestItem.getClassName())) {
-        File outPutFile =
-            new File(String.valueOf(Paths.get("src/test/resources/" + i++ + "coffee.png")));
-        assert buffImg != null;
-        if (!outPutFile.exists()) {
-          log.info(String.valueOf(outPutFile.createNewFile()));
+        File outPutFile = Paths.get("src/test/resources/coffee" + i++ + ".png").toFile();
+        if (buffImg != null) {
+          if (!outPutFile.exists()) {
+            log.info(String.valueOf(outPutFile.createNewFile()));
+          }
+          ImageIO.write(buffImg, "png", outPutFile);
         }
-        ImageIO.write(buffImg, "png", outPutFile);
       }
     }
     canvas.dispose();
