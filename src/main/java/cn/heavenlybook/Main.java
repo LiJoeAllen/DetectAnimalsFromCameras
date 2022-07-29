@@ -14,9 +14,12 @@ import org.bytedeco.javacv.OpenCVFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameGrabber;
 import org.bytedeco.opencv.opencv_core.Mat;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * @author ht
@@ -51,6 +54,11 @@ public class Main {
       log.info(classifications.toJson());
       // 显示视频图像
       canvas.showImage(frame);
+      if (bestItem.getProbability() == 1.0) {
+        File outPutFile = new File(new Date() + ".png");
+        assert buffImg != null;
+        ImageIO.write(buffImg, "png", outPutFile);
+      }
     }
     canvas.dispose();
     grabber.close();
