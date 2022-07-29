@@ -14,7 +14,7 @@ import java.nio.IntBuffer;
  *
  * @author Calvin
  */
-public class OpenCVImageUtil {
+public class OpenCvImageUtil {
 
   /**
    * 将 BufferedImage 转 Mat

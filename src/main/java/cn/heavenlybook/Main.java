@@ -6,7 +6,7 @@ import ai.djl.modality.cv.Image;
 import ai.djl.modality.cv.ImageFactory;
 import ai.djl.translate.TranslateException;
 import cn.heavenlybook.utils.AnimalsClassification;
-import cn.heavenlybook.utils.OpenCVImageUtil;
+import cn.heavenlybook.utils.OpenCvImageUtil;
 import lombok.extern.java.Log;
 import org.bytedeco.javacv.CanvasFrame;
 import org.bytedeco.javacv.Frame;
@@ -48,7 +48,7 @@ public class Main {
     while (canvas.isVisible() && (frame = grabber.grab()) != null) {
       // 将获取的frame转化成mat数据类型
       Mat img = converter.convert(frame);
-      BufferedImage buffImg = OpenCVImageUtil.mat2BufferedImage(img);
+      BufferedImage buffImg = OpenCvImageUtil.mat2BufferedImage(img);
       Image image = ImageFactory.getInstance().fromImage(buffImg);
       Classifications classifications = AnimalsClassification.predict(image);
       Classifications.Classification bestItem = classifications.best();
@@ -56,7 +56,7 @@ public class Main {
       log.info(classifications.toJson());
       // 显示视频图像
       canvas.showImage(frame);
-      if (bestItem.getProbability() == 1.0 && !"非动物".equals(bestItem.getClassName())) {
+      if (bestItem.getProbability() < 0.00001 && !"非动物".equals(bestItem.getClassName())) {
         File outPutFile = Paths.get("src/test/resources/coffee" + i++ + ".png").toFile();
         if (buffImg != null) {
           if (!outPutFile.exists()) {
