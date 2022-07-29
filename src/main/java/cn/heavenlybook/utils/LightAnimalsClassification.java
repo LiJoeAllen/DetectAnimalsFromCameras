@@ -37,7 +37,9 @@ public final class LightAnimalsClassification {
       Classifications.Classification item = items.get(i);
       double prob = item.getProbability();
       probArr[i] = prob;
-      if (prob > max) max = prob;
+      if (prob > max) {
+        max = prob;
+      }
     }
 
     for (int i = 0; i < items.size(); i++) {
@@ -69,7 +71,7 @@ public final class LightAnimalsClassification {
             .optProgress(new ProgressBar())
             .build();
 
-    try (ZooModel rotateModel = ModelZoo.loadModel(criteria)) {
+    try (ZooModel<Image, Classifications> rotateModel = ModelZoo.loadModel(criteria)) {
       try (Predictor<Image, Classifications> classifier = rotateModel.newPredictor()) {
         Classifications classifications = classifier.predict(img);
         return classifications;

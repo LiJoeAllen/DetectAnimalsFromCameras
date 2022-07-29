@@ -59,25 +59,27 @@ public final class AnimalsClassification {
     return new Classifications(names, probs);
   }
 
+  static Criteria<Image, Classifications> criteria;
+  static ZooModel<Image, Classifications> rotateModel;
+  static Predictor<Image, Classifications> classifier;
+
   public static Classifications classfier(Image img)
       throws IOException, ModelException, TranslateException {
 
-    Criteria<Image, Classifications> criteria =
-        Criteria.builder()
-            .optEngine("PaddlePaddle")
-            .setTypes(Image.class, Classifications.class)
-            .optModelUrls("https://aias-home.oss-cn-beijing.aliyuncs.com/models/animals.zip")
-            //            .optModelUrls("/Users/calvin/model/animals/")
-            .optModelName("inference")
-            .optTranslator(new AnimalTranslator())
-            .optProgress(new ProgressBar())
-            .build();
-
-    try (ZooModel<Image, Classifications> rotateModel = ModelZoo.loadModel(criteria)) {
-      try (Predictor<Image, Classifications> classifier = rotateModel.newPredictor()) {
-        Classifications classifications = classifier.predict(img);
-        return classifications;
-      }
-    }
+    criteria =
+        criteria == null
+            ? Criteria.builder()
+                .optEngine("PaddlePaddle")
+                .setTypes(Image.class, Classifications.class)
+                .optModelUrls("https://aias-home.oss-cn-beijing.aliyuncs.com/models/animals.zip")
+                //            .optModelUrls("/Users/calvin/model/animals/")
+                .optModelName("inference")
+                .optTranslator(new AnimalTranslator())
+                .optProgress(new ProgressBar())
+                .build()
+            : criteria;
+    rotateModel = rotateModel == null ? ModelZoo.loadModel(criteria) : rotateModel;
+    classifier = classifier == null ? rotateModel.newPredictor() : classifier;
+    return classifier.predict(img);
   }
 }

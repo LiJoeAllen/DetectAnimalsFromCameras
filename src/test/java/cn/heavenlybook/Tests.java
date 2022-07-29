@@ -1,3 +1,5 @@
+package cn.heavenlybook;
+
 import org.testng.annotations.Test;
 
 /**
