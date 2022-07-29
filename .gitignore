@@ -1,5 +1,5 @@
 /.idea/
-
+!/.git/
 
 
 ### Maven template
